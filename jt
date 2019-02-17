@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+# Strict settings
+set -o errexit
+set -o pipefail
+set -o nounset
+
+# Magic variables
+__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+__file="${__dir}/$(basename "${BASH_SOURCE[0]}")"
+__base="$(basename "${__file}" .sh)"
+
+# Print out usage information
+usage() {
+  cat <<HEREDOC
+Usage:
+  ${__base} [<arguments>]
+
+  Creates a file in \$JT_DIR/YYYY-MM-DD-HH:mm:ss.txt.
+
+Options:
+  -h --help  Show this.
+  <data>     Populate file with <data>. If not set, open file with $EDITOR.
+HEREDOC
+}
+
+# Make a new Markdown note
+make_note() {
+  # Create & make from today's date
+  note_name="$(date +%Y-%m-%d-%H:%M:%S)"
+  touch "${JT_DIR}/${note_name}.txt"
+
+  # Check for args
+  if [[ -z "${*:-}" ]]; then
+    $EDITOR "${JT_DIR}/${note_name}.txt"
+  else
+    echo "${*:-}" >> "${JT_DIR}/${note_name}.txt"
+  fi
+}
+
+# Drives it
+main() {
+  # Check if $JT_DIR is set
+  if [[ -z "${JT_DIR:-}" ]]; then
+    # If not, set to $HOME/Notes
+    JT_DIR="${HOME}/Notes"
+
+    # Check directory exists
+    if [[ ! -d "${JT_DIR}" ]]; then
+      # Create it if necessary
+      mkdir -p "${JT_DIR}"
+    fi
+  fi
+
+  # Parse arguments
+  if [[ "${1:-}" =~ ^-h|--help$ ]]; then
+    usage
+  else
+    # Pass in args as a string, not array
+    make_note "${*:-}"
+  fi
+}
+
+# Call it
+main "${@:-}"
