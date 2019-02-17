@@ -16,11 +16,11 @@ usage() {
 Usage:
   ${__base} [<arguments>]
 
-  Creates a file in \$JT_DIR/YYYY-MM-DD-HH:mm:ss.txt.
+  Creates file \$JT_DIR/YYYY-MM-DD-HH:mm:ss.txt.
 
 Options:
   -h --help  Show this.
-  <data>     Populate file with <data>. If not set, open file with $EDITOR.
+  <data>     Populate file with <data>. If not set, open file for editing.
 HEREDOC
 }
 
@@ -44,12 +44,12 @@ main() {
   if [[ -z "${JT_DIR:-}" ]]; then
     # If not, set to $HOME/Notes
     JT_DIR="${HOME}/Notes"
+  fi
 
-    # Check directory exists
-    if [[ ! -d "${JT_DIR}" ]]; then
-      # Create it if necessary
-      mkdir -p "${JT_DIR}"
-    fi
+  # Check directory exists
+  if [[ ! -d "${JT_DIR}" ]]; then
+    # Create it if necessary
+    mkdir -p "${JT_DIR}"
   fi
 
   # Parse arguments

@@ -31,7 +31,7 @@ jt [<arguments>]
 
 Options:
   -h --help  Show this.
-  <data>     Populate file with <data>. If not set, open file with $EDITOR.
+  <data>     Populate file with <data>. If not set, open file for editing.
 ```
 
 ## License
