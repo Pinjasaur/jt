@@ -1,16 +1,4 @@
-language: bash
-
-sudo: false
-
-addons:
-  apt:
-    sources:
-    - debian-sid
-    packages:
-    - shellcheck
+language: shell
 
 script:
  - bash -c 'shellcheck jt'
-
-matrix:
-  fast_finish: true
